@@ -10,7 +10,7 @@ const create = async (req, res, next) => {
 	console.log("Adding manufacturer");
 	try {
 		const manufacturer = await Manufacturer.create(req.body);
-		return res.status(200).json(manufacturer);
+		return res.status(202).json(manufacturer);
 	} catch (error) {
 		console.log(error);
 		return next(error);

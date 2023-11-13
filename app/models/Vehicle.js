@@ -4,7 +4,7 @@ const { Schema, model } = require("mongoose");
  * The manufacturer
  */
 const Vehicle = Schema({
-	model: {type:String, required: [true, "The vehicle's model name is required"]},
+	model: {type:String, unique: [true, "The vehicle's name should be unique"], required: [true, "The vehicle's model name is required"]},
 	manufacturer: {type: Schema.Types.ObjectId, ref: 'Manufacturer', required: [true, "The vehicle's manufacturer is required"]},
 	vehicleType: {
 		type: [String],
