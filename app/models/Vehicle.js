@@ -7,7 +7,7 @@ const Vehicle = Schema({
 	model: {type:String, required: [true, "The vehicle's model name is required"]},
 	manufacturer: {type: Schema.Types.ObjectId, ref: 'Manufacturer', required: [true, "The vehicle's manufacturer is required"]},
 	vehicleType: {
-		type: String,
+		type: [String],
 		required: true,
 		enum: [
 			"SUV",
@@ -18,8 +18,6 @@ const Vehicle = Schema({
 			"Station Wagon",
 			"Crossover",
 			"Minivan",
-			"Sports Car",
-			"Compact Car",
 			"Pickup Truck",
 			"Van",
 			"Luxury Car",

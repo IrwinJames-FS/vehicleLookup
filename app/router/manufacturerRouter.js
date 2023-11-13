@@ -19,3 +19,5 @@ router.delete("/id/:id", deleteById);
 
 //Not found handler
 router.use(manufacturerNotFound);
+
+module.exports = router;
