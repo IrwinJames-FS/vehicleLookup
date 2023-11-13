@@ -1,10 +1,12 @@
 const express = require("express");
+const morgan = require("morgan");
 
 const app = express();
 
 const router = require("./router");
 
 app.use(express.json());
+app.use(morgan("dev"));
 
 //Server status
 app.get("/", (req, res) => res.status(200).send("Service is up"));
