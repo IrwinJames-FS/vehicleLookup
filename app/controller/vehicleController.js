@@ -48,6 +48,22 @@ const updateById = async (req, res, next) => {
 }
 
 /**
+ * Create Vehicle
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ * @returns 
+ */
+const create = async (req, res, next) => {
+	try {
+		const vehicle = await Vehicle.create( req.body);
+		return res.status(202).json(vehicle);
+	} catch (error) {
+		return next(error);
+	}
+}
+
+/**
  * Delete Vehicle by ID
  * @param {*} req 
  * @param {*} res 
