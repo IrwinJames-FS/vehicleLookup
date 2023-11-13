@@ -12,12 +12,41 @@
 			"item": [
 				{
 					"name": "Create Vehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Test\", () => {",
+									"    pm.response.to.have.status(202);",
+									"});",
+									"",
+									"pm.test(\"Model should be Civic\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"model\", \"Civic\");",
+									"});",
+									"",
+									"pm.test(\"Manufacturer's ID should match the last saved id\", () => {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"manufacturer\", pm.environment.get(\"lastManufacturer\"))",
+									"});",
+									"",
+									"pm.test(\"Vehicle's _id field is not null and should be stored for later testing\", () => {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"_id\");",
+									"    pm.environment.set(\"lastVehicle\", response._id);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"model\": \"Civic\",\n    \"manufacturer\": \"6551abfae90152a199d42d6f\",\n    \"vehicleType\": [\"Sedan\", \"Hatchback\"],\n    \"releaseDate\": \"1972-7-1\"\n}",
+							"raw": "{\n    \"model\": \"Civic\",\n    \"manufacturer\": \"{{lastManufacturer}}\",\n    \"vehicleType\": [\"Sedan\", \"Hatchback\"],\n    \"releaseDate\": \"1972-7-1\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -25,35 +54,71 @@
 							}
 						},
 						"url": {
-							"raw": "{{vehicl_url}}",
+							"raw": "{{vehicle_url}}",
 							"host": [
-								"{{vehicl_url}}"
+								"{{vehicle_url}}"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Create Vehicle",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"model\": \"Accord\",\n    \"manufacturer\": \"6551abfae90152a199d42d6f\",\n    \"vehicleType\": [\"Sedan\", \"Hatchback\"],\n    \"releaseDate\": \"1972-7-1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{vehicl_url}}",
+									"host": [
+										"{{vehicl_url}}"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "Get All Vehicles",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response statush should be 200\", () => pm.response.to.have.status(200));",
+									"",
+									"pm.test(\"One model should be available\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"length\", 1);",
+									"});",
+									"",
+									"pm.test(\"first vehicle should have model name of Civic\", () => {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response[0]).to.have.property(\"model\", \"Civic\");",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"model\": \"Civic\",\n    \"manufacturer\": \"6551abfae90152a199d42d6f\",\n    \"vehicleType\": [\"Sedan\", \"Hatchback\"],\n    \"releaseDate\": \"1972-7-1\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{vehicl_url}}",
+							"raw": "{{vehicle_url}}",
 							"host": [
-								"{{vehicl_url}}"
+								"{{vehicle_url}}"
 							]
 						}
 					},
@@ -61,25 +126,34 @@
 				},
 				{
 					"name": "Get Vehicle by ID",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response Status should be 200\", ()=>pm.response.to.have.status(200));",
+									"",
+									"pm.test(\"Model should be 300c\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"model\", \"300c\");",
+									"});",
+									"",
+									"pm.test(\"Manufacturer should match lastManufacturer\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.manufacturer).to.have.property(\"_id\", pm.environment.get(\"lastManufacturer\"))",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"model\": \"Civic\",\n    \"manufacturer\": \"6551abfae90152a199d42d6f\",\n    \"vehicleType\": [\"Sedan\", \"Hatchback\"],\n    \"releaseDate\": \"1972-7-1\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "{{vehicl_url}}/id/:id",
+							"raw": "{{vehicle_url}}/id/:id",
 							"host": [
-								"{{vehicl_url}}"
+								"{{vehicle_url}}"
 							],
 							"path": [
 								"id",
@@ -88,7 +162,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6551af9fefeba518bb1f7354"
+									"value": "{{lastVehicle}}"
 								}
 							]
 						}
@@ -97,12 +171,34 @@
 				},
 				{
 					"name": "Update Vehicle by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status should be 202\", ()=>pm.response.to.have.status(202));",
+									"",
+									"pm.test(\"Model should now be 300c\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"model\", \"300c\");",
+									"});",
+									"",
+									"pm.test(\"VehicleType should contain 1 type and it should be Sedan\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.vehicleType).to.have.length(1);",
+									"    pm.expect(response.vehicleType).to.contain(\"Sedan\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"releaseDate\": \"1972-7-15\"\n}",
+							"raw": "{\n    \"model\": \"300c\",\n    \"vehicleType\": [\"Sedan\"],\n    \"releaseDate\": \"2003-7-15\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -110,9 +206,9 @@
 							}
 						},
 						"url": {
-							"raw": "{{vehicl_url}}/id/:id",
+							"raw": "{{vehicle_url}}/id/:id",
 							"host": [
-								"{{vehicl_url}}"
+								"{{vehicle_url}}"
 							],
 							"path": [
 								"id",
@@ -121,7 +217,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6551af9fefeba518bb1f7354"
+									"value": "{{lastVehicle}}"
 								}
 							]
 						}
@@ -130,13 +226,25 @@
 				},
 				{
 					"name": "Delete Vehicle by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status should be 204\", ()=>pm.response.to.have.status(204));",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{vehicl_url}}/id/:id",
+							"raw": "{{vehicle_url}}/id/:id",
 							"host": [
-								"{{vehicl_url}}"
+								"{{vehicle_url}}"
 							],
 							"path": [
 								"id",
@@ -145,7 +253,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6551af9fefeba518bb1f7354"
+									"value": "{{lastVehicle}}"
 								}
 							]
 						}
@@ -159,6 +267,37 @@
 			"item": [
 				{
 					"name": "Create Manufacturer (Honda)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status Test\", ()=> pm.response.to.have.status(202));",
+									"",
+									"pm.test(\"Manufacturer should be 'Honda'\", () => {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"name\", \"Honda\");",
+									"});",
+									"",
+									"pm.test(\"Manufacturer should have established date of 24/09/1948\", () => {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"established\", \"1948-09-24T04:00:00.000Z\");",
+									"});",
+									"",
+									"//This is not a meaningful test but I am using it to store an id for later testing",
+									"pm.test(\"Has a valid ID and store for later\", ()=> { ",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"_id\");",
+									"    pm.environment.set(\"lastManufacturer\", response._id)",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -182,6 +321,27 @@
 				},
 				{
 					"name": "Get all manufacturers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status should be 200\", () => pm.response.to.have.status(200));",
+									"",
+									"pm.test(\"Total number of manufacturers should be 1\", () => {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"length\", 1);",
+									"});",
+									"",
+									"pm.test(\"First result's ID should equal last ID\", () => {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response[0]).to.have.property(\"_id\", pm.environment.get(\"lastManufacturer\"));",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -196,6 +356,27 @@
 				},
 				{
 					"name": "Get manufacturer by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status should be 200\", ()=>pm.response.to.have.status(200));",
+									"",
+									"pm.test(\"Manufacturer name should be Chrysler\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"name\", \"Chrysler\");",
+									"});",
+									"",
+									"pm.test(\"Manufacturer ID should equal the last manufacturer id stored\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"_id\", pm.environment.get(\"lastManufacturer\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -211,7 +392,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6551abfae90152a199d42d6f"
+									"value": "{{lastManufacturer}}"
 								}
 							]
 						}
@@ -220,12 +401,33 @@
 				},
 				{
 					"name": "Update manufacturer by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status should be 202\", ()=> pm.response.to.have.status(202))",
+									"",
+									"pm.test(\"Manufacturer name should now be Chrysler\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"name\", \"Chrysler\");",
+									"});",
+									"",
+									"pm.test(\"Manufacturer should be established 6/6/1925\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"established\", \"1925-06-06T04:00:00.000Z\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"revenue\": 6000000000\n}",
+							"raw": "{\n    \"name\": \"Chrysler\",\n    \"established\": \"1925-6-6\",\n    \"revenue\": 6000000000\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -244,7 +446,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6551ac40e90152a199d42d71"
+									"value": "{{lastManufacturer}}"
 								}
 							]
 						}
@@ -253,6 +455,27 @@
 				},
 				{
 					"name": "Delete manufacturer by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status should be 202\",()=>pm.response.to.have.status(202));",
+									"",
+									"pm.test(\"Response should have property 'acknowledged' which equals true\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"acknowledged\", true);",
+									"});",
+									"",
+									"pm.test(\"Response should have property 'deletedCount' which equals 1\", ()=>{",
+									"    const response = pm.response.json();",
+									"    pm.expect(response).to.have.property(\"deletedCount\", 1);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -268,7 +491,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "6551ac40e90152a199d42d71"
+									"value": "{{lastManufacturer}}"
 								}
 							]
 						}
@@ -279,6 +502,29 @@
 		},
 		{
 			"name": "API Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/*",
+							"I am getting warnings about using more then the free run limit. Also the final tests are not running. In attempts to correct this I am blocking these checks here as this this not a functional endpoint",
+							"pm.test(\"Status should be 200\", ()=> pm.response.to.have.status(200));",
+							"",
+							"pm.test(\"Response should say 'Service is up'\", ()=>{",
+							"    const response = pm.response.json();",
+							"    pm.expect(response).to.have.property(\"message\", \"Service is up\");",
+							"});",
+							"",
+							"pm.test(\"Response should have a property indicating status check is successful\", () => {",
+							"    const response = pm.response.json();",
+							"    pm.expect(response).to.have.property(\"success\", true);",
+							"});*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -329,7 +575,7 @@
 			"type": "string"
 		},
 		{
-			"key": "vehicl_url",
+			"key": "vehicle_url",
 			"value": "{{api_url}}/vehicle",
 			"type": "string"
 		},

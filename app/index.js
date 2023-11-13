@@ -20,6 +20,7 @@ app.use("/v1", router);
 
 //Error handling
 app.use((error, req, res, next) => {
+	console.log(error);
 	return res.status(error.status || 500).json({
 		error: {
 			message: error.message,

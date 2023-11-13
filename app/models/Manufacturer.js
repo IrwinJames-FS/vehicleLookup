@@ -10,8 +10,9 @@ const Manufacturer = Schema({
 });
 
 //cascade models that are related to this manufacturer
-Manufacturer.pre('remove', function(next){
-	Vehicle.remove({manufacturer: this._id}).exec();
+Manufacturer.pre('deleteOne', function(next){
+	const id = this.getQuery()['_id'];
+	Vehicle.deleteMany({manufacturer: id}).exec();
 	next();
 });
 

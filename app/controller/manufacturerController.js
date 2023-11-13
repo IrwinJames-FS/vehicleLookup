@@ -73,7 +73,7 @@ const updateById = async (req, res, next) => {
 const deleteById = async (req, res, next) => {
 	const { id } = req.params;
 	try {
-		const manufacturer = await Manufacturer.findByIdAndDelete(id);
+		const manufacturer = await Manufacturer.deleteOne({_id: id}); //deleteOne should allow for middleware to be utilized.
 		return res.status(manufacturer ? 202:204).json(manufacturer);
 	} catch (error) {
 		return next(error);
