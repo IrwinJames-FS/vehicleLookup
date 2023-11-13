@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "2dedae13-cc5f-4f33-89b7-162f001012b1",
+		"name": "Vehicle Lookup",
+		"description": "An API which allows for the saving of a vehicle model and its manufacturer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30817406"
+	},
+	"item": [
+		{
+			"name": "Vehicle",
+			"item": [
+				{
+					"name": "Create Vehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"model\": \"Civic\",\n    \"manufacturer\": \"6551abfae90152a199d42d6f\",\n    \"vehicleType\": [\"Sedan\", \"Hatchback\"],\n    \"releaseDate\": \"1972-7-1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{vehicl_url}}",
+							"host": [
+								"{{vehicl_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Vehicles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"model\": \"Civic\",\n    \"manufacturer\": \"6551abfae90152a199d42d6f\",\n    \"vehicleType\": [\"Sedan\", \"Hatchback\"],\n    \"releaseDate\": \"1972-7-1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{vehicl_url}}",
+							"host": [
+								"{{vehicl_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vehicle by ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"model\": \"Civic\",\n    \"manufacturer\": \"6551abfae90152a199d42d6f\",\n    \"vehicleType\": [\"Sedan\", \"Hatchback\"],\n    \"releaseDate\": \"1972-7-1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{vehicl_url}}/id/:id",
+							"host": [
+								"{{vehicl_url}}"
+							],
+							"path": [
+								"id",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6551af9fefeba518bb1f7354"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Vehicle by ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"releaseDate\": \"1972-7-15\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{vehicl_url}}/id/:id",
+							"host": [
+								"{{vehicl_url}}"
+							],
+							"path": [
+								"id",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6551af9fefeba518bb1f7354"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Vehicle by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{vehicl_url}}/id/:id",
+							"host": [
+								"{{vehicl_url}}"
+							],
+							"path": [
+								"id",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6551af9fefeba518bb1f7354"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Manufacturer",
+			"item": [
+				{
+					"name": "Create Manufacturer (Honda)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Honda\",\n    \"established\":\"1948-9-24\",\n    \"revenue\": 98547410000.00\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{manufacturer_url}}",
+							"host": [
+								"{{manufacturer_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all manufacturers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{manufacturer_url}}",
+							"host": [
+								"{{manufacturer_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get manufacturer by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{manufacturer_url}}/id/:id",
+							"host": [
+								"{{manufacturer_url}}"
+							],
+							"path": [
+								"id",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6551abfae90152a199d42d6f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update manufacturer by ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"revenue\": 6000000000\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{manufacturer_url}}/id/:id",
+							"host": [
+								"{{manufacturer_url}}"
+							],
+							"path": [
+								"id",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6551ac40e90152a199d42d71"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete manufacturer by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{manufacturer_url}}/id/:id",
+							"host": [
+								"{{manufacturer_url}}"
+							],
+							"path": [
+								"id",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6551ac40e90152a199d42d71"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{status_url}}",
+					"host": [
+						"{{status_url}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost",
+			"type": "string"
+		},
+		{
+			"key": "port",
+			"value": "3000",
+			"type": "string"
+		},
+		{
+			"key": "api_url",
+			"value": "{{status_url}}/v1",
+			"type": "string"
+		},
+		{
+			"key": "vehicl_url",
+			"value": "{{api_url}}/vehicle",
+			"type": "string"
+		},
+		{
+			"key": "manufacturer_url",
+			"value": "{{api_url}}/manufacturer",
+			"type": "string"
+		},
+		{
+			"key": "status_url",
+			"value": "{{base_url}}:{{port}}",
+			"type": "string"
+		}
+	]
+}
