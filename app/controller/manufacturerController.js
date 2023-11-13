@@ -55,7 +55,7 @@ const getById = async (req, res, next) => {
 const updateById = async (req, res, next) => {
 	const { id } = req.params;
 	try {
-		const manufacturer = await Manufacturer.findByIdAndUpdate(id, req.body, {new: true});
+		const manufacturer = await Manufacturer.findByIdAndUpdate(id, {$set:req.body}, {new: true});
 		return manufacturer ? res.status(202).json(manufacturer):next();
 	} catch (error) {
 		return next(error);
@@ -82,4 +82,13 @@ const manufacturerNotFound = (req, res, next) => {
 	const error = new Error("Manufacturer not found!");
 	error.status = 404;
 	return next(error);
+}
+
+module.exports = {
+	create,
+	deleteById,
+	manufacturerNotFound,
+	getAll,
+	getById,
+	updateById,
 }

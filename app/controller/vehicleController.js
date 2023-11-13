@@ -40,7 +40,7 @@ const getById = async (req, res, next) => {
 const updateById = async (req, res, next) => {
 	const { id } = req.params;
 	try {
-		const vehicle = await Vehicle.findByIdAndUpdate(id, req.body, {new: true});
+		const vehicle = await Vehicle.findByIdAndUpdate(id, {$set: req.body}, {new: true});
 		return vehicle ? res.status(202).json(vehicle):next();
 	} catch (error) {
 		return next(error);
