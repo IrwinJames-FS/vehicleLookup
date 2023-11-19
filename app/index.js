@@ -1,5 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
+const {service_is_up} = require("./messages");
 
 require("./db/config")();
 const app = express();
@@ -9,9 +11,10 @@ const router = require("./router");
 app.use(express.json());
 app.use(morgan("dev"));
 
+app.use(cors()); //Published version should not require this I will be rolling client and server into one server prior to submission.
 //Server status
 app.get("/", (req, res) => res.status(200).json({
-	message:"Service is up",
+	message: service_is_up,
 	success: true
 }));
 

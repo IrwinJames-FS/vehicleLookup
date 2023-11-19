@@ -1,4 +1,5 @@
 const Vehicle = require("../models/Vehicle");
+const { vehicle_not_found } = require("../messages");
 
 /**
  * Create Vehicle
@@ -24,7 +25,7 @@ const create = async (req, res, next) => {
  */
 const getAll = async (_, res, next) => {
 	try {
-		const vehicles = await Vehicle.find().populate('manufacturer').exec();
+		const vehicles = await Vehicle.find().select("-__v").populate('manufacturer', "name").exec();
 		return res.status(200).json(vehicles);
 	} catch (error) {
 		return next(error);
@@ -40,7 +41,7 @@ const getAll = async (_, res, next) => {
 const getById = async (req, res, next) => {
 	const { id } = req.params;
 	try {
-		const vehicle = await Vehicle.findById(id).populate('manufacturer').exec();
+		const vehicle = await Vehicle.findById(id).select("-__v").populate('manufacturer', "name").exec();
 		return vehicle ? res.status(200).json(vehicle):next();
 	} catch (error) {
 		return next(error);
@@ -56,7 +57,7 @@ const getById = async (req, res, next) => {
 const updateById = async (req, res, next) => {
 	const { id } = req.params;
 	try {
-		const vehicle = await Vehicle.findByIdAndUpdate(id, {$set: req.body}, {new: true});
+		const vehicle = await Vehicle.findByIdAndUpdate(id, {$set: req.body}, {new: true}).exec();
 		return vehicle ? res.status(202).json(vehicle):next();
 	} catch (error) {
 		return next(error);
@@ -72,7 +73,7 @@ const updateById = async (req, res, next) => {
 const deleteById = async (req, res, next) => {
 	const { id } = req.params;
 	try {
-		const vehicle = await Vehicle.findByIdAndDelete(id);
+		const vehicle = await Vehicle.findByIdAndDelete(id).exec();
 		return res.status(vehicle ? 202:204).json(vehicle);
 	} catch (error) {
 		return next(error);
@@ -86,7 +87,7 @@ const deleteById = async (req, res, next) => {
  * @param {*} next  
  */
 const vehicleNotFound = (req, res, next) => {
-	const error = new Error("Vehicle not found!");
+	const error = new Error(vehicle_not_found);
 	error.status = 404;
 	return next(error);
 }

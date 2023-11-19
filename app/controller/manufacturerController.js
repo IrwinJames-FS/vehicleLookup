@@ -1,5 +1,7 @@
 const Manufacturer = require("../models/Manufacturer");
+const {manufacturer_not_found} = require("../messages");
 
+const popArgs = ['models', 'model vehicleType -manufacturer']
 /**
  * Create Manufacturer
  * @param {*} req 
@@ -7,7 +9,6 @@ const Manufacturer = require("../models/Manufacturer");
  * @param {*} next 
  */
 const create = async (req, res, next) => {
-	console.log("Adding manufacturer");
 	try {
 		const manufacturer = await Manufacturer.create(req.body);
 		return res.status(202).json(manufacturer);
@@ -25,7 +26,7 @@ const create = async (req, res, next) => {
  */
 const getAll = async (_, res, next) => {
 	try {
-		const manufacturers = await Manufacturer.find()
+		const manufacturers = await Manufacturer.find().select("-__v").populate(...popArgs).exec()
 		return res.status(200).json(manufacturers);
 	} catch (error) {
 		return next(error);
@@ -41,7 +42,7 @@ const getAll = async (_, res, next) => {
 const getById = async (req, res, next) => {
 	const { id } = req.params;
 	try {
-		const manufacturer = await Manufacturer.findById(id);
+		const manufacturer = await Manufacturer.findById(id).select("-__v").populate(...popArgs).exec();
 		return manufacturer ? res.status(200).json(manufacturer):next();
 	} catch (error) {
 		return next(error);
@@ -81,7 +82,7 @@ const deleteById = async (req, res, next) => {
 }
 
 const manufacturerNotFound = (req, res, next) => {
-	const error = new Error("Manufacturer not found!");
+	const error = new Error(manufacturer_not_found);
 	error.status = 404;
 	return next(error);
 }
